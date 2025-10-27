@@ -11,19 +11,31 @@ commonLabels:
   environment: dev
   managed-by: argocd
 
-# Add replicas patch for dev environment (lower replicas)
+# Add replicas patch and labels for dev environment
 patches:
   - target:
-      kind: Deployment
+      kind: Rollout
       name: user-service
     patch: |-
       - op: replace
         path: /spec/replicas
         value: 1
+      - op: add
+        path: /spec/template/metadata/labels/environment
+        value: dev
+      - op: add
+        path: /spec/template/metadata/labels/managed-by
+        value: argocd
   - target:
-      kind: Deployment
+      kind: Rollout
       name: order-service
     patch: |-
       - op: replace
         path: /spec/replicas
         value: 1
+      - op: add
+        path: /spec/template/metadata/labels/environment
+        value: dev
+      - op: add
+        path: /spec/template/metadata/labels/managed-by
+        value: argocd

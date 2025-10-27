@@ -1,0 +1,18 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: order-service-preview
+  labels:
+    app: order-service
+    role: preview
+spec:
+  type: ClusterIP
+  ports:
+  - port: 8082
+    targetPort: 8082
+    protocol: TCP
+    name: http
+  selector:
+    app: order-service
+    # This selector will be managed by Argo Rollouts
+    # It will point to the preview (green) pods

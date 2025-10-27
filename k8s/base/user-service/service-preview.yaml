@@ -1,0 +1,18 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: user-service-preview
+  labels:
+    app: user-service
+    role: preview
+spec:
+  type: ClusterIP
+  ports:
+  - port: 8081
+    targetPort: 8081
+    protocol: TCP
+    name: http
+  selector:
+    app: user-service
+    # This selector will be managed by Argo Rollouts
+    # It will point to the preview (green) pods

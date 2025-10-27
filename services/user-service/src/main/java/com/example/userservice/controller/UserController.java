@@ -56,4 +56,10 @@ public class UserController {
         boolean deleted = userService.deleteUser(id);
         return deleted ? ResponseEntity.noContent().build() : ResponseEntity.notFound().build();
     }
+
+    @GetMapping("/version")
+    public ResponseEntity<String> getVersion() {
+        log.info("GET /api/users/version - Returning version");
+        return ResponseEntity.ok("v2.0.0 - Blue-Green Deployment");
+    }
 }
