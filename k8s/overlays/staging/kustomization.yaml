@@ -1,0 +1,41 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+namespace: staging
+
+resources:
+  - ../../base/user-service
+  - ../../base/order-service
+
+commonLabels:
+  environment: staging
+  managed-by: argocd
+
+# Staging-specific patches (closer to production than dev)
+patches:
+  - target:
+      kind: Rollout
+      name: user-service
+    patch: |-
+      - op: replace
+        path: /spec/replicas
+        value: 2
+      - op: add
+        path: /spec/template/metadata/labels/environment
+        value: staging
+      - op: add
+        path: /spec/template/metadata/labels/managed-by
+        value: argocd
+  - target:
+      kind: Rollout
+      name: order-service
+    patch: |-
+      - op: replace
+        path: /spec/replicas
+        value: 2
+      - op: add
+        path: /spec/template/metadata/labels/environment
+        value: staging
+      - op: add
+        path: /spec/template/metadata/labels/managed-by
+        value: argocd
